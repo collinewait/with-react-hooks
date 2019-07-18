@@ -1,13 +1,22 @@
-import React, { useState, useEffect, useReducer } from 'react';
+/* eslint-disable no-console */
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useCallback,
+} from 'react';
 
 const useLogToConsoleAndReturnNewName = (newName) => {
   const [customHookName, setCustomHookName] = useState('I am a custom hook');
 
+  const updateName = useCallback(
+    () => setCustomHookName(`I am ${newName}`), [newName],
+  );
+
   useEffect(() => {
-    setCustomHookName(`I am ${newName}`);
-    // eslint-disable-next-line no-console
+    updateName();
     console.log('My custom hook', customHookName);
-  }, [customHookName, newName]);
+  }, [customHookName, newName, updateName]);
   return customHookName;
 };
 
