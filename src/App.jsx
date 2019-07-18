@@ -7,6 +7,7 @@ const useLogToConsoleAndReturnNewName = (newName) => {
 
   useEffect(() => {
     setNewHookName();
+    // eslint-disable-next-line no-console
     console.log('My custom hook', customHookName);
   });
   return customHookName;
@@ -39,13 +40,13 @@ const App = () => {
   // }
 
   // Better code. Use the condition inside the hook.
-    useEffect(() => {
-      if (count > 0 ) {
+  useEffect(() => {
+    if (count > 0) {
       localStorage.setItem('formData', count);
-      }
-    });  
+    }
+  });
 
-    /**
+  /**
      * Unlike the setState method found in class components,
      * useState does not automatically merge update objects.
      * You can replicate this behavior by combining the function
@@ -61,13 +62,15 @@ const App = () => {
 
   return (
     <>
-      Count: {count}
-      <button onClick={() => setCount(0)}>Reset</button>
-      <button onClick={() => setCount(prevCount => prevCount + 1)}>+</button>
-      <button onClick={() => setCount(prevCount => prevCount - 1)}>-</button>
+      Count:
+      {' '}
+      {count}
+      <button type="button" onClick={() => setCount(0)}>Reset</button>
+      <button type="button" onClick={() => setCount(prevCount => prevCount + 1)}>+</button>
+      <button type="button" onClick={() => setCount(prevCount => prevCount - 1)}>-</button>
       <h1>{newName}</h1>
     </>
   );
-}
+};
 
 export default App;
