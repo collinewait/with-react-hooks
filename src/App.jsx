@@ -3,13 +3,11 @@ import React, { useState, useEffect } from 'react';
 const useLogToConsoleAndReturnNewName = (newName) => {
   const [customHookName, setCustomHookName] = useState('I am a custom hook');
 
-  const setNewHookName = () => setCustomHookName(`I am ${newName}`);
-
   useEffect(() => {
-    setNewHookName();
+    setCustomHookName(`I am ${newName}`);
     // eslint-disable-next-line no-console
     console.log('My custom hook', customHookName);
-  });
+  }, [customHookName, newName]);
   return customHookName;
 };
 
