@@ -5,6 +5,7 @@ import React, {
   useReducer,
   useCallback,
 } from 'react';
+import { useSelector } from 'react-redux';
 
 const useLogToConsoleAndReturnNewName = (newName) => {
   const [customHookName, setCustomHookName] = useState('I am a custom hook');
@@ -38,8 +39,11 @@ function reducer(state, action) {
   }
 }
 
-const App = ({ initialCount }) => {
-  const [state, dispatch] = useReducer(reducer, initialCount, init);
+const initialState = { count: 0 };
+
+const App = () => {
+  const count = useSelector(state => state.count);
+  const [state, dispatch] = useReducer(reducer, initialState, init);
   const newName = useLogToConsoleAndReturnNewName('Colline');
 
   /**
@@ -53,7 +57,7 @@ const App = ({ initialCount }) => {
    */
   useEffect(() => {
     // Update the document title using the browser API
-    document.title = `You clicked ${state.count} times`;
+    document.title = `You clicked ${count} times`;
   });
 
   // This code breaks the first rule of hooks and should not be used
@@ -65,8 +69,8 @@ const App = ({ initialCount }) => {
 
   // Better code. Use the condition inside the hook.
   useEffect(() => {
-    if (state.count > 0) {
-      localStorage.setItem('formData', state.count);
+    if (count > 0) {
+      localStorage.setItem('formData', count);
     }
   });
 
@@ -91,7 +95,7 @@ const App = ({ initialCount }) => {
       {state.count}
       <button
         type="button"
-        onClick={() => dispatch({ type: 'reset', payload: initialCount })}
+        onClick={() => dispatch({ type: 'reset', payload: initialState })}
       >
 
         Reset
@@ -99,6 +103,10 @@ const App = ({ initialCount }) => {
       <button type="button" onClick={() => dispatch({ type: 'increment' })}>+</button>
       <button type="button" onClick={() => dispatch({ type: 'decrement' })}>-</button>
       <h1>{newName}</h1>
+      <h2>
+        Value from the store:
+        {count}
+      </h2>
     </>
   );
 };
