@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
+const useLogToConsoleAndReturnNewName = (newName) => {
+  const [customHookName, setCustomHookName] = useState('I am a custom hook');
+
+  const setNewHookName = () => setCustomHookName(`I am ${newName}`);
+
+  useEffect(() => {
+    setNewHookName();
+    console.log('My custom hook', customHookName);
+  });
+  return customHookName;
+};
+
 const App = () => {
   const [count, setCount] = useState(0);
+
+  const newName = useLogToConsoleAndReturnNewName('Colline');
 
   /**
    * Similar to componentDidMount and componentDidUpdate:
@@ -37,6 +51,7 @@ const App = () => {
       <button onClick={() => setCount(count + 1)}>
         Click me
       </button>
+      <h1>{newName}</h1>
     </div>
   );
 }
