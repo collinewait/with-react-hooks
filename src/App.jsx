@@ -2,10 +2,9 @@
 import React, {
   useState,
   useEffect,
-  useReducer,
   useCallback,
 } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 
 const useLogToConsoleAndReturnNewName = (newName) => {
@@ -22,24 +21,6 @@ const useLogToConsoleAndReturnNewName = (newName) => {
   return customHookName;
 };
 
-function init(initialState) {
-  console.log('Called init function', initialState);
-  return initialState;
-}
-
-function reducer(state, action) {
-  switch (action.type) {
-    case 'increment':
-      return { count: state.count + 1 };
-    case 'decrement':
-      return { count: state.count - 1 };
-    case 'reset':
-      return init(action.payload);
-    default:
-      throw new Error();
-  }
-}
-
 const initialState = { count: 0 };
 
 const selectCount = createSelector(
@@ -49,7 +30,8 @@ const selectCount = createSelector(
 
 const App = () => {
   const count = useSelector(selectCount);
-  const [state, dispatch] = useReducer(reducer, initialState, init);
+  const dispatch = useDispatch();
+  // const [state, dispatch] = useReducer(reducer, initialState, init);
   const newName = useLogToConsoleAndReturnNewName('Colline');
 
   /**
@@ -98,7 +80,7 @@ const App = () => {
     <>
       Count:
       {' '}
-      {state.count}
+      {count}
       <button
         type="button"
         onClick={() => dispatch({ type: 'reset', payload: initialState })}
@@ -106,8 +88,8 @@ const App = () => {
 
         Reset
       </button>
-      <button type="button" onClick={() => dispatch({ type: 'increment' })}>+</button>
-      <button type="button" onClick={() => dispatch({ type: 'decrement' })}>-</button>
+      <button type="button" onClick={() => dispatch({ type: 'INCREMENT_COUNTER' })}>+</button>
+      <button type="button" onClick={() => dispatch({ type: 'DECREMENT_COUNTER' })}>-</button>
       <h1>{newName}</h1>
       <h2>
         Value from the store:

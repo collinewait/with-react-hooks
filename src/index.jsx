@@ -5,12 +5,20 @@ import { createStore } from 'redux';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const GET_COUNT = 'GET_COUNT';
+const GET_COUNTER = 'GET_COUNTER';
+const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
+const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
 
-const rootReducer = (state = { count: 6 }, action) => {
+const rootReducer = (state = { count: 0 }, action) => {
   switch (action.type) {
-    case GET_COUNT: {
+    case GET_COUNTER: {
       return state;
+    }
+    case INCREMENT_COUNTER: {
+      return { count: state.count + 1 };
+    }
+    case DECREMENT_COUNTER: {
+      return { count: state.count - 1 };
     }
     default: {
       return state;
