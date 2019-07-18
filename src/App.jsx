@@ -6,6 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 
 const useLogToConsoleAndReturnNewName = (newName) => {
   const [customHookName, setCustomHookName] = useState('I am a custom hook');
@@ -41,8 +42,13 @@ function reducer(state, action) {
 
 const initialState = { count: 0 };
 
+const selectCount = createSelector(
+  state => state.count,
+  todo => todo,
+);
+
 const App = () => {
-  const count = useSelector(state => state.count);
+  const count = useSelector(selectCount);
   const [state, dispatch] = useReducer(reducer, initialState, init);
   const newName = useLogToConsoleAndReturnNewName('Colline');
 
