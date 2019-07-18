@@ -25,7 +25,7 @@ const initialState = { count: 0 };
 
 const selectCount = createSelector(
   state => state.count,
-  todo => todo,
+  count => count,
 );
 
 const App = () => {
@@ -62,6 +62,15 @@ const App = () => {
     }
   });
 
+  const incrementCounter = useCallback(
+    () => dispatch({ type: 'INCREMENT_COUNTER' }),
+    [dispatch],
+  );
+
+  const decrementCounter = useCallback(
+    () => dispatch({ type: 'DECREMENT_COUNTER' }),
+    [dispatch],
+  );
   /**
      * Unlike the setState method found in class components,
      * useState does not automatically merge update objects.
@@ -88,8 +97,8 @@ const App = () => {
 
         Reset
       </button>
-      <button type="button" onClick={() => dispatch({ type: 'INCREMENT_COUNTER' })}>+</button>
-      <button type="button" onClick={() => dispatch({ type: 'DECREMENT_COUNTER' })}>-</button>
+      <button type="button" onClick={incrementCounter}>+</button>
+      <button type="button" onClick={decrementCounter}>-</button>
       <h1>{newName}</h1>
       <h2>
         Value from the store:
