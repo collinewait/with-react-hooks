@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 
 const useLogToConsoleAndReturnNewName = (newName) => {
   const [customHookName, setCustomHookName] = useState('I am a custom hook');
@@ -11,8 +11,21 @@ const useLogToConsoleAndReturnNewName = (newName) => {
   return customHookName;
 };
 
+const initialState = { count: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    default:
+      throw new Error();
+  }
+}
+
 const App = () => {
-  const [count, setCount] = useState(0);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const newName = useLogToConsoleAndReturnNewName('Colline');
 
@@ -27,7 +40,7 @@ const App = () => {
    */
   useEffect(() => {
     // Update the document title using the browser API
-    document.title = `You clicked ${count} times`;
+    document.title = `You clicked ${state.count} times`;
   });
 
   // This code breaks the first rule of hooks and should not be used
@@ -39,8 +52,8 @@ const App = () => {
 
   // Better code. Use the condition inside the hook.
   useEffect(() => {
-    if (count > 0) {
-      localStorage.setItem('formData', count);
+    if (state.count > 0) {
+      localStorage.setItem('formData', state.count);
     }
   });
 
@@ -62,10 +75,9 @@ const App = () => {
     <>
       Count:
       {' '}
-      {count}
-      <button type="button" onClick={() => setCount(0)}>Reset</button>
-      <button type="button" onClick={() => setCount(prevCount => prevCount + 1)}>+</button>
-      <button type="button" onClick={() => setCount(prevCount => prevCount - 1)}>-</button>
+      {state.count}
+      <button type="button" onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button type="button" onClick={() => dispatch({ type: 'decrement' })}>-</button>
       <h1>{newName}</h1>
     </>
   );
