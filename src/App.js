@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const App = () => {
   const [count, setCount] = useState(0);
-  
+
   /**
    * Similar to componentDidMount and componentDidUpdate:
    * This function can optionally return a function that
@@ -16,6 +16,20 @@ const App = () => {
     // Update the document title using the browser API
     document.title = `You clicked ${count} times`;
   });
+
+  // This code breaks the first rule of hooks and should not be used
+  // if (count > 0 ) {
+  //   useEffect(() => {
+  //     localStorage.setItem('formData', count);
+  //   });
+  // }
+
+  // Better code. Use the condition inside the hook.
+    useEffect(() => {
+      if (count > 0 ) {
+      localStorage.setItem('formData', count);
+      }
+    });
 
   return (
     <div>
