@@ -11,7 +11,10 @@ const useLogToConsoleAndReturnNewName = (newName) => {
   return customHookName;
 };
 
-const initialState = { count: 0 };
+function init(initialState) {
+  console.log('Called init function', initialState);
+  return initialState;
+}
 
 function reducer(state, action) {
   switch (action.type) {
@@ -19,14 +22,15 @@ function reducer(state, action) {
       return { count: state.count + 1 };
     case 'decrement':
       return { count: state.count - 1 };
+    case 'reset':
+      return init(action.payload);
     default:
       throw new Error();
   }
 }
 
-const App = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
+const App = ({ initialCount }) => {
+  const [state, dispatch] = useReducer(reducer, initialCount, init);
   const newName = useLogToConsoleAndReturnNewName('Colline');
 
   /**
@@ -76,6 +80,13 @@ const App = () => {
       Count:
       {' '}
       {state.count}
+      <button
+        type="button"
+        onClick={() => dispatch({ type: 'reset', payload: initialCount })}
+      >
+
+        Reset
+      </button>
       <button type="button" onClick={() => dispatch({ type: 'increment' })}>+</button>
       <button type="button" onClick={() => dispatch({ type: 'decrement' })}>-</button>
       <h1>{newName}</h1>
