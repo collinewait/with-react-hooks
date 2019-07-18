@@ -43,16 +43,30 @@ const App = () => {
       if (count > 0 ) {
       localStorage.setItem('formData', count);
       }
-    });
+    });  
+
+    /**
+     * Unlike the setState method found in class components,
+     * useState does not automatically merge update objects.
+     * You can replicate this behavior by combining the function
+     * updater form with object spread syntax:
+     * setState(prevState => {
+     *  // Object.assign would also work
+     * return {...prevState, ...updatedValues};
+     *});
+     *
+     * Another option is useReducer, which is more suited
+     * for managing state objects that contain multiple sub-values.
+     */
 
   return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+    <>
+      Count: {count}
+      <button onClick={() => setCount(0)}>Reset</button>
+      <button onClick={() => setCount(prevCount => prevCount + 1)}>+</button>
+      <button onClick={() => setCount(prevCount => prevCount - 1)}>-</button>
       <h1>{newName}</h1>
-    </div>
+    </>
   );
 }
 
